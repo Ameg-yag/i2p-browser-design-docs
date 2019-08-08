@@ -7,14 +7,14 @@ This document should be considered a draft unless otherwise spesified.
 * [Introduction](#intro)
   * [Browser Component Overview](#browsercomponents)
   * [Differences with TBB](#difftbb)
-* [Design Requirements and Philosophy]()
-  * [Security Requirements]()
-  * [Privacy Requirements]()
-  * [Philosophy]()
-* [The Counterparty Model]()
-  * [The goals of any Counterparty]()
-  * [Counterparty Capabilities - Positioning]()
-  * [Counterparty Capabilities - Attack]()
+* [Design Requirements and Philosophy](#designreq)
+  * [Security Requirements](#secreq)
+  * [Privacy Requirements](#privreq)
+  * [Philosophy](#philosophy)
+* [The Counterparty Model](#counterpartymodel)
+  * [The goals of any Counterparty](#counterpartygoals)
+  * [Counterparty Capabilities - Positioning](#counterpartypositioning)
+  * [Counterparty Capabilities - Attack](#counterpartyattack)
 * [Implementation]()
   * [Strict I2P and Internet Separation]()
   * [State Separation]()
@@ -23,7 +23,7 @@ This document should be considered a draft unless otherwise spesified.
   * [Cross-Origin Identifier Unlinkability]()
 
 
-## Introduction
+## <a name="intro"></a>Introduction
 
 This document describes the I2P model, design reuirements and roughly implementation of the I2P Browser. At the time of writing the browser is at version 2.0 Beta 4.
 
@@ -31,7 +31,7 @@ This document is also meant to serve as a set of design requirements and to desc
 
 For more practical information regarding I2P Browser development, please have a look at our [Browser Hacking Guide](https://trac.i2p2.de/wiki/I2P_Browser_develop_n_hacks), in general it might be worth reading the Tor equalent found at [Tor Browser Hacking Guide](https://trac.torproject.org/projects/tor/wiki/doc/TorBrowser/Hacking) as the products are quite alike in their build process and the documents describe different pharses of the process.
 
-### Browser Component Overview
+### <a name="browsercomponents"></a>Browser Component Overview
 
 The I2P Browser is based on [Mozilla's Extended Support Release (ESR) Firefox branch](https://www.mozilla.org/en-US/firefox/organizations/), while we do also have some [patches in common with TBB](https://gitweb.torproject.org/tor-browser.git) as well as some of our own to enhance privacy and security. Browser behavior is altered through both direct Firefox patches and functionality from the [I2PButton extension](https://github.com/mikalv/i2pbutton). As TBB, we also [change a number of Firefox
 preferences](https://github.com/mikalv/test-i2p-browser/blob/i2p-browser-60.7.0esr-9.0-1-build3/browser/app/profile/000-tor-browser.js) from their defaults.
@@ -40,12 +40,12 @@ The I2P process management and configuration is accomplished through the [I2PBut
 
 To provide users with optional defense-in-depth against JavaScript and other potential exploit vectors, we include [NoScript](https://noscript.net/). We also modify some of [NoScript](https://noscript.net/) preferences from their defaults.
 
-### Differences with TBB
+### <a name="difftbb"></a>Differences with TBB
 
 The Tor project has done a good job with their browser, and we share a lot of common privacy and security patches, however we don't intend to be a direct copy or be fully based upon TBB as it has a lot of patches related to Tor spesific functionality that I2P won't need.
 
 
-## Design Requirements and Philosophy
+## <a name="designreq"></a>Design Requirements and Philosophy
 
 The I2P Browser Design Requirements are meant to describe the properties of a Private Browsing Mode that defends against both network and local forensic enemies.
 
@@ -56,7 +56,7 @@ While we will endorse the use of browsers that meet the security requirements, i
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 
-### Security Requirements
+### <a name="secreq"></a>Security Requirements
 
 The security requirements are primarily concerned with ensuring the safe use of I2P, violations in these properties typically result in serious risk for the user in terms of immediate deanonymization and/or observability. With respect to browser support, security requirements are the minimum properties in order for I2P to support the use of a particular browser.
 
@@ -69,7 +69,7 @@ The security requirements are primarily concerned with ensuring the safe use of 
 4. **Application Data Isolation**<br>
     The components involved in providing private browsing MUST be self-contained, or MUST provide a mechanism for rapid, complete removal of all evidence of the use of the mode. In other words, the browser MUST NOT write or cause the operating system to write any information about the use of private browsing to disk outside of the application's control. The user must be able to ensure that secure deletion of the software is sufficient to remove evidence of the use of the software. All exceptions and shortcomings due to operating system behavior MUST be wiped by an uninstaller. However, due to permissions issues with access to swap, implementations MAY choose to leave it out of scope, and/or leave it to the operating system/platform to implement ephemeral-keyed encrypted swap.
 
-### Privacy Requirements
+### <a name="privreq"></a>Privacy Requirements
 
 The privacy requirements are primarily concerned with reducing linkability: the ability for a user's activity on one site to be linked with their activity on another site without their knowledge or explicit consent. With respect to browser support, privacy requirements are the set of properties that cause us to prefer one browser over another.
 
@@ -82,7 +82,7 @@ For the purposes of the unlinkability requirements of this section as well as th
 3. **Long-Term Unlinkability**<br>
     The browser MUST provide an obvious, easy way for the user to remove all of its authentication tokens and browser state and obtain a fresh identity. Additionally, the browser SHOULD clear linkable state by default automatically upon browser restart, except at user option.
 
-### Philosophy
+### <a name="philosophy"></a>Philosophy
 
 In addition to the above design requirements, the technology decisions about I2P Browser are also guided by some philosophical positions about technology.
 
@@ -102,9 +102,9 @@ In addition to the above design requirements, the technology decisions about I2P
     If the user has indicated they wish to record local history storage, these permissions can be written to disk. Otherwise, they should remain memory-only.
 
 
-## The Counterparty Model
+## <a name="counterpartymodel"></a>The Counterparty Model
 
-### The goals of any Counterparty
+### <a name="counterpartygoals"></a>The goals of any Counterparty
 
 1. **Bypassing proxy settings**<br>
     The counterparty's primary goal is direct compromise and bypass of I2P, causing the user to directly connect to an IP of the counterparty's choosing.
@@ -119,7 +119,7 @@ In addition to the above design requirements, the technology decisions about I2P
 6. **History records and other on-disk information**<br>
     In some cases, the counterparty may opt for a heavy-handed approach, such as seizing the computers of all I2P users in an area (especially after narrowing the field by the above two pieces of information). History records and cache data are the primary goals here. Secondary goals may include confirming on-disk identifiers (such as hostname and disk-logged spoofed MAC address history) obtained by other means.
 
-### Counterparty Capabilities - Positioning
+### <a name="counterpartypositioning"></a>Counterparty Capabilities - Positioning
 
 The counterparties can position themselves at a number of different locations in order to execute their attacks.
 
@@ -132,7 +132,7 @@ The counterparties can position themselves at a number of different locations in
 4. **Physical Access**<br>
     Some users face counterparties with intermittent or constant physical access. Users in Internet cafes, for example, face such a threat. In addition, in countries where simply using tools like I2P and other darknet/VPN services is illegal, users may face confiscation of their computer equipment for excessive I2P usage or just general suspicion.
 
-### Counterparty Capabilities - Attacks
+### <a name="counterpartyattack"></a>Counterparty Capabilities - Attacks
 
 The counterparties can perform the following attacks from a number of different positions to accomplish various aspects of their goals. It should be noted that many of these attacks (especially those involving IP address leakage) are often performed by accident by websites that simply have JavaScript, dynamic CSS elements, and plugins. Others are performed by ad servers seeking to correlate users' activity across different IP addresses, and still others are performed by malicious agents on the I2P network and at national firewalls.
 
