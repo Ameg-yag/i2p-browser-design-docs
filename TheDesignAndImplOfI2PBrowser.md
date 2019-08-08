@@ -44,6 +44,8 @@ To provide users with optional defense-in-depth against JavaScript and other pot
 
 The Tor project has done a good job with their browser, and we share a lot of common privacy and security patches, however we don't intend to be a direct copy or be fully based upon TBB as it has a lot of patches related to Tor spesific functionality that I2P won't need.
 
+Working together with the people over at TBB isn't totally out of the question from our end, but as long as they pretend we don't exists - it's not possible.
+
 
 ## <a name="designreq"></a>Design Requirements and Philosophy
 
